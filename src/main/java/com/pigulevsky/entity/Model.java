@@ -6,6 +6,7 @@ import org.springframework.core.style.ToStringCreator;
 
 import com.pigulevsky.entity.model.NamedEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -29,14 +30,16 @@ public class Model extends NamedEntity {
 	@JoinColumn(name = "producer_id")
 	private Producer producer;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	@JoinTable(
 	  name = "model_supply", 
 	  joinColumns = @JoinColumn(name = "model_id"), 
 	  inverseJoinColumns = @JoinColumn(name = "supplier_id"))
 	private List<Supplier> suppliers;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "model")
+	@OneToMany(fetch = FetchType.EAGER, 
+			cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST})
+	@JoinColumn(name = "model_id")
 	private List<Submodel> submodels;
 	
 	public String getAttributes() {

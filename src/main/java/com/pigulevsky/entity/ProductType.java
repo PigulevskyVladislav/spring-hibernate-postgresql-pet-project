@@ -6,11 +6,12 @@ import org.springframework.core.style.ToStringCreator;
 
 import com.pigulevsky.entity.model.NamedEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -26,8 +27,8 @@ public class ProductType extends NamedEntity {
 	@Column(name = "product_category")
 	private ProductCategory category;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product_type", cascade = CascadeType.)
-	@OrderBy("name_")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+	@JoinColumn(name = "product_type_id")
 	private List<Model> models;
 	
 	public ProductCategory getCategory() {

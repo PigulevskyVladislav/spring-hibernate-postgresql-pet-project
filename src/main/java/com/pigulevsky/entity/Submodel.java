@@ -6,6 +6,7 @@ import org.springframework.core.style.ToStringCreator;
 
 import com.pigulevsky.entity.model.BaseEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -21,7 +22,8 @@ public class Submodel extends BaseEntity {
 	@Column(columnDefinition = "jsonb")
 	private String attributes;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "submodel")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "submodel", 
+			cascade = {CascadeType.REMOVE, CascadeType.DETACH})
 	private List<MarketPlace> marketPlaces;
 	
 	public String getAttributes() {
